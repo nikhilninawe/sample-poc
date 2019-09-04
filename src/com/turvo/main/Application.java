@@ -76,9 +76,11 @@ public class Application {
     RedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConFactory
                 = new JedisConnectionFactory();
-        jedisConFactory.setHostName("production-cache-02.os5iek.ng.0001.usw2.cache.amazonaws.com");
+//        jedisConFactory.setHostName("dev-ryder-sandbox-20190530-1220.turvo.net");
+//        jedisConFactory.setHostName("production-cache-02.os5iek.ng.0001.usw2.cache.amazonaws.com");
 //        jedisConFactory.setHostName("rehearsal-cache-01-001.os5iek.0001.usw2.cache.amazonaws.com");
 //        jedisConFactory.setPort(6379);
+        jedisConFactory.setHostName("union-platform-cache.turvo.net");
         return jedisConFactory;
     }
 

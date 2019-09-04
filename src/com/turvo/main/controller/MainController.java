@@ -31,7 +31,7 @@ public class MainController {
     @RequestMapping(("/cache"))
     public String getCache(){
         HashMap<String, Object> map = new HashMap<>();
-        map.put("name", "total_shipments_mongo");
+        map.put("name", "delivery-count-v2");
 
         HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("busId", 100);
@@ -39,6 +39,7 @@ public class MainController {
         groups.add(1l);
         groups.add(23l);
         parameters.put("shipment_groups", groups);
-        return redisCacheAnnotation.getValue(map, parameters);
+//        return redisCacheAnnotation.getValue(map, parameters);
+        return redisCacheAnnotation.getValueMySQL(map, parameters);
     }
 }
