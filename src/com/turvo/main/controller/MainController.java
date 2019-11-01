@@ -1,5 +1,6 @@
 package com.turvo.main.controller;
 
+import com.turvo.connect.service.IReconciliator;
 import com.turvo.main.core.RedisCacheAnnotation;
 import com.turvo.main.core.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class MainController {
     @Autowired
     RedisCacheAnnotation redisCacheAnnotation;
 
+    @Autowired
+    IReconciliator iReconciliator;
+
     @RequestMapping("/test")
     public void call(){
         List<Long> busFormIds = new ArrayList<>();
@@ -41,5 +45,11 @@ public class MainController {
         parameters.put("shipment_groups", groups);
 //        return redisCacheAnnotation.getValue(map, parameters);
         return redisCacheAnnotation.getValueMySQL(map, parameters);
+    }
+
+    @RequestMapping("/aop")
+    public String testAOP(){
+        iReconciliator.reconciliateRequest(null);
+        return "OK";
     }
 }

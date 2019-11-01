@@ -49,8 +49,8 @@ public class RedisService {
 //       redisTemplate.opsForHash()
 //                .delete(DEFAULT_USER_VIEWABLE_GROUP_KEY + 485, 62660L);
 //        System.out.println("Viewable groups " + redisGroupVO);
-        Object object = redisTemplate.opsForValue().get("LOOKUP|3370353");
-        System.out.println(object);
+        System.out.println(redisTemplate.opsForValue().get("LOOKUP|BY_KEY|33300"));
+//        System.out.println("Value " + object.getValue());
 //        MemoryMeter meter = new MemoryMeter();
 //        ObjectMapper mapper = new ObjectMapper();
 //        Event x = mapper.readValue(FileUtil.readAsString(new File("/Users/nikhil.n/workspace/sample-poc/src/main/resources/context.txt")), Event.class);
