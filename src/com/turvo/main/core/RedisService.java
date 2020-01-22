@@ -44,12 +44,13 @@ public class RedisService {
 
     @PostConstruct
     public void init() throws Exception{
-//        Object object = redisTemplate.opsForHash().delete("users699", 97119L);
-//        System.out.println("Old " + object);
-//       redisTemplate.opsForHash()
-//                .delete(DEFAULT_USER_VIEWABLE_GROUP_KEY + 485, 62660L);
+//        Object object = redisTemplate.opsForValue().get("LOOKUP|2|7503");
+        Object object = redisTemplate.opsForValue().get("LOOKUP|2436305");
+        System.out.println("Old " + object);
+//        RedisUserVO redisGroupVO = (RedisUserVO) redisTemplate.opsForHash()
+//                .get(DEFAULT_USER_VIEWABLE_GROUP_KEY + 19, 980L);
 //        System.out.println("Viewable groups " + redisGroupVO);
-        System.out.println(redisTemplate.opsForValue().get("LOOKUP|BY_KEY|33300"));
+//        System.out.println(redisTemplate.opsForHash().get("UserViewableGroup1", 2L));
 //        System.out.println("Value " + object.getValue());
 //        MemoryMeter meter = new MemoryMeter();
 //        ObjectMapper mapper = new ObjectMapper();
