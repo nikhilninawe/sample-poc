@@ -21,7 +21,7 @@ import java.util.List;
 public class InventoryMongo {
 
 
-    public void test(){
+    public void get_inventory(){
         BasicDBObject searchQuery = new BasicDBObject();
         BasicDBList conditions = new BasicDBList();
         BasicDBObject customerCondition = new BasicDBObject();
@@ -50,7 +50,7 @@ public class InventoryMongo {
             Document next = (Document) cursor.next();
             ids.add(("\"" + next.get("inventory_id").toString() + "\""));
         }
-        File f = new File("test.txt");
+        File f = new File("inventory_ids.txt");
         try {
             FileUtils.writeStringToFile(f, ids.toString());
         }catch (Exception ex){
@@ -58,26 +58,22 @@ public class InventoryMongo {
         }
     }
 
-    public void test2(){
+    public void get_inventory_summary_ids(){
         BasicDBObject searchQuery = new BasicDBObject();
-        BasicDBObject tenant_list = new BasicDBObject();
-        List<Integer> tenants = new ArrayList<>();
-        tenants.add(8318);
-//        tenants.add(22710);
-//        tenants.add(29);
-        tenant_list.put("$in", tenants);
-        searchQuery.put("tenant_id", tenant_list);
-        BasicDBObject list = new BasicDBObject();
-        ArrayList<Integer> x = new ArrayList<>();
-        x.add(391831);
-//        x.add(395599);
-//        x.add(395582);
-//        x.add(537802);
-//        x.add(537803);
-//        list.put("$in", x);
-        searchQuery.put("customer.values.value.id", list);
-        searchQuery.put("active", false);
-        searchQuery.put("deleted", true);
+        BasicDBList conditions = new BasicDBList();
+        BasicDBObject customerCondition = new BasicDBObject();
+        customerCondition.put("indexed_attributes.busId", 8318);
+        customerCondition.put("indexed_attributes.key", "customer.id");
+        customerCondition.put("indexed_attributes.value", 2966403);
+        conditions.add(customerCondition);
+
+        BasicDBObject locationCondition = new BasicDBObject();
+        locationCondition.put("indexed_attributes.busId", 8318);
+        locationCondition.put("indexed_attributes.key", "location.id");
+        locationCondition.put("indexed_attributes.value", 2212989);
+        conditions.add(locationCondition);
+
+        searchQuery.put("$and", conditions);
         BasicDBObject projects = new BasicDBObject();
         projects.put("inventory_summary_id", 1);
         FindIterable<Document> documents=  mongoClient().getDatabase("turvo")
@@ -91,7 +87,7 @@ public class InventoryMongo {
             Document next = (Document) cursor.next();
             ids.add(("\"" + next.get("inventory_summary_id").toString() + "\""));
         }
-        File f = new File("test2.txt");
+        File f = new File("inventory_summary_ids.txt");
         try {
             FileUtils.writeStringToFile(f, ids.toString());
         }catch (Exception ex){
@@ -101,7 +97,6 @@ public class InventoryMongo {
 
     public MongoClientOptions mongoClientOptions(){
         return MongoClientOptions.builder()
-//                .socketTimeout(100)
                 .build();
     }
 
@@ -113,8 +108,8 @@ public class InventoryMongo {
 
     public static void  main(String[] args){
         InventoryMongo poc = new InventoryMongo();
-        poc.test();
-//        poc.test2();
+        poc.get_inventory();
+        poc.get_inventory_summary_ids();
     }
 
 }
