@@ -53,14 +53,11 @@ dependencies {
     compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.5.0'
     compile group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
     compile group: 'com.turvo.utils', name: 'maps-here', version: '1.0.1-SNAPSHOT'
-    compile group: 'com.turvo.utils', name: 'map-utils', version: '1.0.1-SNAPSHOT'
     compile group: 'com.github.jbellis', name: 'jamm', version: '0.3.3'
     compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.9.0'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5'
     compile group: 'org.projectlombok', name: 'lombok', version: '0.11.0'
-    compile group: 'commons-io', name: 'commons-io', version: '2.6'
-
-
+    compile group: 'commons-io', name: 'commons-io', version: '2.5'
 
 }

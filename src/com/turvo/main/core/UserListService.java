@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(noRollbackFor = {RedisConnectionFailureException.class})
+@Transactional(noRollbackFor = {Exception.class})
 public class UserListService {
 
     @Autowired

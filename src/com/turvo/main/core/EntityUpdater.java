@@ -18,7 +18,7 @@ public class EntityUpdater {
         try {
             userListService.users();
         }catch (Exception ex){
-            LOGGER.info("Exception", ex);
+            LOGGER.info("Exception", ex.getMessage());
         }
     }
 

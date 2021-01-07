@@ -1,59 +1,46 @@
 package com.turvo.main.core;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
-import com.mongodb.bulk.UpdateRequest;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.UpdateOptions;
-import com.mongodb.client.result.UpdateResult;
-import com.turvo.main.domain.Person;
 import org.apache.commons.io.FileUtils;
 import org.bson.Document;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.print.Doc;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Component
-public class MongoPOC {
+public class InventoryMongo {
 
 
     public void test(){
         BasicDBObject searchQuery = new BasicDBObject();
-        BasicDBObject tenant_list = new BasicDBObject();
-        List<Integer> tenants = new ArrayList<>();
-        tenants.add(7338);
-        tenants.add(8318);
-        tenant_list.put("$in", tenants);
-        searchQuery.put("tenant_id", tenant_list);
-        BasicDBObject list = new BasicDBObject();
-//        ArrayList<Integer> x = new ArrayList<>();
-//        x.add(391831);
-//        x.add(395599);
-//        x.add(395582);
-//        x.add(537802);
-//        x.add(537803);
-//        list.put("$in", x);
-        searchQuery.put("name", new BasicDBObject("$exists", false));
-//        searchQuery.put("packages", new BasicDBObject("$exists", false));
-//        searchQuery.put("active", false);
-//        searchQuery.put("deleted", true);
+        BasicDBList conditions = new BasicDBList();
+        BasicDBObject customerCondition = new BasicDBObject();
+        customerCondition.put("indexed_attributes.busId", 8318);
+        customerCondition.put("indexed_attributes.key", "customer.id");
+        customerCondition.put("indexed_attributes.value", 2966403);
+        conditions.add(customerCondition);
+
+        BasicDBObject locationCondition = new BasicDBObject();
+        locationCondition.put("indexed_attributes.busId", 8318);
+        locationCondition.put("indexed_attributes.key", "location.id");
+        locationCondition.put("indexed_attributes.value", 2212989);
+        conditions.add(locationCondition);
+
+        searchQuery.put("$and", conditions);
         BasicDBObject projects = new BasicDBObject();
-        projects.put("item_id", 1);
+        projects.put("inventory_id", 1);
         FindIterable<Document> documents=  mongoClient().getDatabase("turvo")
-                .getCollection("itemFormFieldData")
+                .getCollection("inventoryFormFieldData")
                 .find(searchQuery)
                 .projection(projects)
                 ;
@@ -61,7 +48,7 @@ public class MongoPOC {
         ArrayList<String> ids = new ArrayList<>();
         while (cursor.hasNext()){
             Document next = (Document) cursor.next();
-            ids.add(("\"" + next.get("item_id").toString() + "\""));
+            ids.add(("\"" + next.get("inventory_id").toString() + "\""));
         }
         File f = new File("test.txt");
         try {
@@ -125,9 +112,9 @@ public class MongoPOC {
     }
 
     public static void  main(String[] args){
-        MongoPOC poc = new MongoPOC();
-//        poc.test();
-        poc.test2();
+        InventoryMongo poc = new InventoryMongo();
+        poc.test();
+//        poc.test2();
     }
 
 }

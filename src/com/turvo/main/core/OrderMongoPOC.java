@@ -1,6 +1,8 @@
 package com.turvo.main.core;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
@@ -27,74 +29,37 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class MongoPOC {
+public class OrderMongoPOC {
 
 
     public void test(){
         BasicDBObject searchQuery = new BasicDBObject();
         BasicDBObject tenant_list = new BasicDBObject();
         List<Integer> tenants = new ArrayList<>();
-        tenants.add(7338);
         tenants.add(8318);
-        tenant_list.put("$in", tenants);
-        searchQuery.put("tenant_id", tenant_list);
-        BasicDBObject list = new BasicDBObject();
-//        ArrayList<Integer> x = new ArrayList<>();
-//        x.add(391831);
-//        x.add(395599);
-//        x.add(395582);
-//        x.add(537802);
-//        x.add(537803);
-//        list.put("$in", x);
-        searchQuery.put("name", new BasicDBObject("$exists", false));
-//        searchQuery.put("packages", new BasicDBObject("$exists", false));
-//        searchQuery.put("active", false);
-//        searchQuery.put("deleted", true);
-        BasicDBObject projects = new BasicDBObject();
-        projects.put("item_id", 1);
-        FindIterable<Document> documents=  mongoClient().getDatabase("turvo")
-                .getCollection("itemFormFieldData")
-                .find(searchQuery)
-                .projection(projects)
-                ;
-        MongoCursor cursor = documents.iterator();
-        ArrayList<String> ids = new ArrayList<>();
-        while (cursor.hasNext()){
-            Document next = (Document) cursor.next();
-            ids.add(("\"" + next.get("item_id").toString() + "\""));
-        }
-        File f = new File("test.txt");
-        try {
-            FileUtils.writeStringToFile(f, ids.toString());
-        }catch (Exception ex){
-
-        }
-    }
-
-    public void test2(){
-        BasicDBObject searchQuery = new BasicDBObject();
-        BasicDBObject tenant_list = new BasicDBObject();
-        List<Integer> tenants = new ArrayList<>();
-        tenants.add(8318);
-//        tenants.add(22710);
-//        tenants.add(29);
         tenant_list.put("$in", tenants);
         searchQuery.put("tenant_id", tenant_list);
         BasicDBObject list = new BasicDBObject();
         ArrayList<Integer> x = new ArrayList<>();
-        x.add(391831);
-//        x.add(395599);
-//        x.add(395582);
-//        x.add(537802);
-//        x.add(537803);
-//        list.put("$in", x);
-        searchQuery.put("customer.values.value.id", list);
-        searchQuery.put("active", false);
-        searchQuery.put("deleted", true);
+        x.add(2902181);
+        x.add(2902182);
+        x.add(2902183);
+        list.put("$in", x);
+        BasicDBObject destination = new BasicDBObject("destination.location.id", 1477518 );
+        BasicDBObject origin = new BasicDBObject("origin.location.id", 1477518);
+        BasicDBList or = new BasicDBList();
+        or.add(origin);
+        or.add(destination);
+        searchQuery.put("phase.id", list);
+        searchQuery.put("$or", or);
+        searchQuery.put("groups", new BasicDBObject("$ne", 92440 ));
+        searchQuery.put("date", new BasicDBObject("$lte", new Date()));
+        searchQuery.put("active", true);
+        searchQuery.put("deleted", false);
         BasicDBObject projects = new BasicDBObject();
-        projects.put("inventory_summary_id", 1);
+        projects.put("order_id", 1);
         FindIterable<Document> documents=  mongoClient().getDatabase("turvo")
-                .getCollection("inventorySummaryFormFieldData")
+                .getCollection("orderFormFieldData")
                 .find(searchQuery)
                 .projection(projects)
                 ;
@@ -102,9 +67,9 @@ public class MongoPOC {
         ArrayList<String> ids = new ArrayList<>();
         while (cursor.hasNext()){
             Document next = (Document) cursor.next();
-            ids.add(("\"" + next.get("inventory_summary_id").toString() + "\""));
+            ids.add(("\"" + next.get("order_id").toString() + "\""));
         }
-        File f = new File("test2.txt");
+        File f = new File("test.txt");
         try {
             FileUtils.writeStringToFile(f, ids.toString());
         }catch (Exception ex){
@@ -125,9 +90,8 @@ public class MongoPOC {
     }
 
     public static void  main(String[] args){
-        MongoPOC poc = new MongoPOC();
-//        poc.test();
-        poc.test2();
+        OrderMongoPOC poc = new OrderMongoPOC();
+        poc.test();
     }
 
 }

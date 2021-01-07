@@ -17,6 +17,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.*;
 
 import javax.annotation.PostConstruct;
 import java.io.File;
@@ -44,13 +45,30 @@ public class RedisService {
 
     @PostConstruct
     public void init() throws Exception{
-//        Object object = redisTemplate.opsForValue().get("LOOKUP|2|7503");
-        Object object = redisTemplate.opsForValue().get("LOOKUP|2436305");
-        System.out.println("Old " + object);
+//        Integer[] keys = {341479, 341575, 341478, 3557986, 341133, 493903, 341132, 493594, 341131};
+//        for(Integer k : Arrays.asList(keys)){
+//            System.out.println(k);
+//            Object object = redisTemplate.opsForValue().get("LOOKUP|" + k);
+//            System.out.println(object);
+//        }
+        Object object = redisTemplate.opsForValue().get("LOOKUP|136032");
+//        boolean delete = redisTemplate.delete("APPOINTMENT||SCHEDULING_INFO|8318|2966420");
+        System.out.println(object);
+//        object = redisTemplate.opsForValue().get("LOOKUP|9195|globaldata.location.ingestion");
+//        System.out.println(object);
+
+//        Object object = redisTemplate.opsForValue().get("485_delivery_location_link_full");
+//        System.out.println("Old " + object);
+//        redisTemplate.delete("485_delivery_location_link_full");
 //        RedisUserVO redisGroupVO = (RedisUserVO) redisTemplate.opsForHash()
-//                .get(DEFAULT_USER_VIEWABLE_GROUP_KEY + 19, 980L);
+//                .get("UserViewableGroup" + 485, 115081L);
 //        System.out.println("Viewable groups " + redisGroupVO);
-//        System.out.println(redisTemplate.opsForHash().get("UserViewableGroup1", 2L));
+//        redisTemplate.opsForHash()
+//                .delete("users" + 485, 11216L);
+//        redisGroupVO = (RedisUserVO) redisTemplate.opsForHash()
+//                .get("users" + 485, 11216L);
+//        System.out.println("Viewable groups " + redisGroupVO);
+//        System.out.println("Date is " + redisTemplate.opsForHash().get("insert", "lookups"));
 //        System.out.println("Value " + object.getValue());
 //        MemoryMeter meter = new MemoryMeter();
 //        ObjectMapper mapper = new ObjectMapper();
@@ -82,6 +100,7 @@ public class RedisService {
 
     public void save(){
 //        redisTemplate.opsForValue().set("test:cardFieldsCache:getCardFields:[2],58,details", "Howdy " + System.currentTimeMillis());
+        throw new RuntimeException("test");
     }
 
     @Cacheable(value = "cardFieldsCache", keyGenerator = "toStringCacheKeyGenerator", cacheManager = "redisCacheManager")

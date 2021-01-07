@@ -3,7 +3,9 @@ package com.turvo.main.controller;
 import com.turvo.connect.service.IReconciliator;
 import com.turvo.main.core.RedisCacheAnnotation;
 import com.turvo.main.core.RedisService;
+import com.turvo.main.core.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,11 +27,16 @@ public class MainController {
     @Autowired
     IReconciliator iReconciliator;
 
+    @Autowired
+    TestService testService;
+
     @RequestMapping("/test")
     public void call(){
-        List<Long> busFormIds = new ArrayList<>();
-        busFormIds.add(3l);
-        System.out.println(redisService.getCardFields(busFormIds,58,"details"));
+//        throw new HttpMessageNotReadableException("2323");
+//        List<Long> busFormIds = new ArrayList<>();
+//        busFormIds.add(3l);
+//        System.out.println(redisService.getCardFields(busFormIds,58,"details"));
+        testService.test();
     }
 
     @RequestMapping(("/cache"))

@@ -34,8 +34,9 @@ public class TestService {
         try {
             entityUpdater.callService();
         }catch (Exception ex){
-            System.out.println(ex);
+            System.out.println(ex.getMessage());
         }
+        System.out.println("Saved");
         return "Saved";
     }
 }

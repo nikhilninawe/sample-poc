@@ -20,13 +20,17 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
-@SpringBootApplication(scanBasePackages = "com.turvo.main")
+@SpringBootApplication( scanBasePackages = "com.turvo.main")
 @EnableWebMvc
 @EnableCaching
 @EnableAspectJAutoProxy
@@ -72,12 +76,13 @@ public class Application {
     RedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConFactory
                 = new JedisConnectionFactory();
+//        jedisConFactory.setHostName("stage-cache-02.os5iek.ng.0001.usw2.cache.amazonaws.com");
 //        jedisConFactory.setHostName("dev-turvo-sandbox-db.turvo.net");
-//        jedisConFactory.setHostName("production-cache-02.os5iek.ng.0001.usw2.cache.amazonaws.com");
-//        jedisConFactory.setHostName("rehearsal-cache-01-001.os5iek.0001.usw2.cache.amazonaws.com");
+        jedisConFactory.setHostName("production-cache-02.os5iek.ng.0001.usw2.cache.amazonaws.com");
+//        jedisConFactory.setHostName("rehearsal-platform-cache.turvo.net");
 //        jedisConFactory.setPort(6379);
 //        jedisConFactory.setHostName("union-platform-cache.turvo.net");
-        jedisConFactory.setHostName("union-cache-01-001.os5iek.0001.usw2.cache.amazonaws.com");
+//        jedisConFactory.setHostName("union-cache-01-001.os5iek.0001.usw2.cache.amazonaws.com");
         return jedisConFactory;
     }
 
@@ -103,8 +108,20 @@ public class Application {
 
     @Bean
     MongoClient mongoClient(){
-        MongoCredential mongoCredential = MongoCredential.createCredential("nikhil.n", "admin", "r!chCamp67".toCharArray());
+        MongoCredential mongoCredential = MongoCredential.createCredential("nikhil.n", "admin", "".toCharArray());
         MongoClient client = new MongoClient(new ServerAddress("production-analytics-mongo.turvo.net", 27017), Arrays.asList(mongoCredential), mongoClientOptions());
         return client;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handle(HttpMessageNotReadableException e) {
+        System.out.println("Returning HTTP 400 Bad Request" + e);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void handle1(HttpMessageNotReadableException e) {
+        System.out.println("Returning HTTP 401 Bad Request" + e);
     }
 }
